@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  padding-bottom: 2rem;
+}
+
+.payment-method {
+  &:hover {
+    background-color: rgba(0, 159, 127, 0.05);
+  }
+
+  &.selected {
+    border-color: #009F7F;
+    background-color: rgba(0, 159, 127, 0.1);
+  }
+}
+
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  button {
+    padding: 0.5rem;
+    background-color: #f7fafc;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #edf2f7;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    padding: 0 1rem;
+    min-width: 3rem;
+    text-align: center;
+  }
+}

@@ -1,0 +1,80 @@
+<div class="min-h-screen bg-[#F3F4F6]">
+  <!-- Navigation -->
+  <nav class="bg-white text-white shadow-lg fixed w-full z-40">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-8">
+          <a routerLink="/" class="text-xl text-primary-dark font-bold">BNRMarketplace</a>
+          
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <div class="hidden md:flex space-x-4">
+            <a routerLink="/products" 
+               routerLinkActive="text-primary"
+               class="hover:text-primary text-slate-900 transition-colors">
+              Produits
+            </a>
+            <a routerLink="/products" 
+               routerLinkActive="text-primary"
+               class="hover:text-primary text-slate-900 transition-colors">
+              Blog
+            </a>
+            <a routerLink="/products" 
+               routerLinkActive="text-primary"
+               class="hover:text-primary text-slate-900 transition-colors">
+              A propos
+            </a>
+          </div>
+          <button (click)="toggleCart()" 
+                  class="py-2 rounded-md transition-colors relative text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="h-6 w-6" 
+                 fill="none" 
+                 viewBox="0 0 24 24" 
+                 stroke="currentColor">
+              <path stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    stroke-width="2" 
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <ng-container *ngIf="itemCount$ | async as count">
+              <span *ngIf="count > 0"
+                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {{ count > 9 ? '9+' : count }}
+              </span>
+            </ng-container>
+          </button>
+          <button class="py-2 rounded-md transition-colors relative text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6" 
+                  viewBox="0 0 24 24" 
+                  fill="none"  
+                  stroke="currentColor">
+              <path 
+                  d="M3.75 6.75H20.25M3.75 12H20.25M3.75 17.25H20.25" 
+                  stroke-width="2" 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round"/>
+              </svg>
+              
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="flex pt-16">
+    <!-- Sidebar -->
+    <app-sidebar class="md:w-64 hidden md:flex min-h-screen bg-white shadow-lg"></app-sidebar>
+
+    <!-- Content -->
+    <main class="flex-1 p-6">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Cart Modal -->
+  <app-modal-cart [(isOpen)]="isCartOpen"></app-modal-cart>
+</div>

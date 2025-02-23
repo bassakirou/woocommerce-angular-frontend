@@ -1,0 +1,37 @@
+<div class="grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-4 mb-6">
+  <div class="relative">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="onSearch()"
+      placeholder="Rechercher un produit..."
+      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#009F7F] focus:border-transparent"
+    />
+    <button
+      *ngIf="searchQuery"
+      (click)="clearSearch()"
+      class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+    >
+      ×
+    </button>
+  </div>
+
+  @if (showPriceRange) {
+    <div class="flex flex-col">
+      <div class="flex justify-between text-sm text-gray-600 mb-2">
+        <span>Min : FCFA {{ priceRange.min }}</span>
+        <span>Max : FCFA {{ priceRange.value }}</span>
+      </div>
+      <input
+        type="range"
+        [(ngModel)]="priceRange.value"
+        [min]="priceRange.min"
+        [max]="priceRange.max"
+        [step]="5000"
+        (ngModelChange)="onPriceChange()"
+        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+      />
+      
+    </div>
+  }
+</div>

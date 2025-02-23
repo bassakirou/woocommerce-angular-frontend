@@ -1,0 +1,39 @@
+<header class="bg-[#33A9FF] text-white">
+  <div class="container mx-auto px-4 h-16 flex items-center">
+    <!-- Logo -->
+    <a routerLink="/" class="text-xl font-bold">
+      BNR Market
+    </a>
+
+    <!-- Navigation -->
+    <nav class="ml-auto">
+      <ul class="flex space-x-6">
+        <li>
+          <a routerLink="/products" 
+             class="hover:text-gray-200 transition-colors">
+            Products
+          </a>
+        </li>
+        <li>
+          <a routerLink="/categories" 
+             class="hover:text-gray-200 transition-colors">
+            Categories
+          </a>
+        </li>
+        <li>
+          <a routerLink="/cart" 
+             class="hover:text-gray-200 transition-colors flex items-center">
+            <span>shop</span>
+            @if (cartItemCount$ | async; as count) {
+              @if (count > 0) {
+                <span class="ml-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {{ count }}
+                </span>
+              }
+            }
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

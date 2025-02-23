@@ -1,0 +1,176 @@
+<!-- Modal Overlay -->
+<div *ngIf="isOpen" 
+     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  
+  <!-- Modal Content -->
+  <div class="bg-white rounded-lg w-full max-h-[90vh] overflow-hidden relative
+              md:w-[90vw] lg:w-[80vw] xl:w-[1200px]" 
+       (click)="$event.stopPropagation()">
+    
+    <!-- Close Button -->
+    <button class="absolute top-4 right-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100"
+            (click)="onClose()">
+      <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- Product Details -->
+    <div class="h-full" *ngIf="product">
+      <div class="grid grid-cols-1 md:grid-cols-2 h-full">
+        
+        <!-- Left Column: Images -->
+        <div class="h-full bg-gray-100 flex flex-col max-h-[600px] md:max-h-[90vh]">
+          <!-- Main Image -->
+          <div class="h-[80%] relative flex-grow flex items-center justify-center p-4">
+            <img [src]="product.images[currentImageIndex]?.src || 'assets/images/placeholders/market-placeholder.jpg'"
+                 [alt]="product.name"
+                 class="max-h-full w-auto object-cover">
+            
+            <!-- Navigation Arrows (only if gallery exists) -->
+            <ng-container *ngIf="hasGallery()">
+              <button *ngIf="currentImageIndex > 0"
+                      class="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100"
+                      (click)="previousImage()">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+              </button>
+              <button *ngIf="currentImageIndex < (product.images?.length || 0) - 1"
+                      class="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100"
+                      (click)="nextImage()">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            </ng-container>
+          </div>
+
+          <!-- Thumbnail Gallery -->
+          <div *ngIf="hasGallery()" class="p-4 bg-white border-t">
+            <div class="flex gap-2 overflow-x-auto pb-2">
+              <button *ngFor="let image of product.images; let i = index"
+                      class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border-2"
+                      [class.border-[#009F7F]]="currentImageIndex === i"
+                      [class.border-transparent]="currentImageIndex !== i"
+                      (click)="selectImage(i)">
+                <img [src]="image.src"
+                     [alt]="product.name"
+                     class="w-full h-full object-cover">
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Info -->
+        <div class="flex flex-col h-full max-h-[90vh]">
+          <div class="p-6 flex flex-col h-full overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-4">{{ product.name }}</h2>
+            
+            <!-- Price -->
+            <div class="flex flex-col mb-6">
+              <span class="text-2xl font-bold text-[#009F7F]">
+                FCFA {{ getPrice() }}
+              </span>
+              <span *ngIf="product.sale_price && product.regular_price" 
+                    class="text-lg text-gray-500 line-through">
+                FCFA {{ product.regular_price }}
+              </span>
+            </div>
+            
+            <!-- Description -->
+            <div class="prose max-w-none mb-6 overflow-y-auto">
+              <div [innerHTML]="product.description"></div>
+            </div>
+
+            <!-- Categories -->
+            <div *ngIf="product.categories?.length" class="mb-6">
+              <h3 class="text-lg font-semibold mb-2">Catégories</h3>
+              <div class="flex flex-wrap gap-2">
+                <a *ngFor="let category of product.categories"
+                   [routerLink]="['/category', category.id]"
+                   (click)="onClose()"
+                   class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors">
+                  {{ category.name }}
+                </a>
+              </div>
+            </div>
+
+            <div class="mb-4 flex gap-3 align-middle">
+                <!-- UGS -->
+                <div class="flex gmap-3">
+                    <h3 class="text-md font-semibold mb-2">UGS : </h3>
+                    <span class="text-md font-semibold text-[#009F7F]">
+                    {{ product.sku || 'Non défini'  }}
+                    </span>
+                </div>
+    
+                <!-- Stock status -->
+                <div class=" flex gmap-3">
+                    <h3 class="text-md font-semibold mb-2">Stock Status : </h3>
+                    <span class="text-md font-semibold text-[#009F7F]">
+                        {{ product.stock_status === 'instock' ? 'En stock' : 'Rupture de stock' }}
+                    </span>
+                </div>
+            </div>
+
+            
+
+            <!-- Add to Cart Section -->
+            <div class="sticky bottom-0 bg-white pt-4 mt-auto border-t">
+                <div class="flex align-middle gap-3">
+                    <!-- Quantity Controls -->
+                <div class="flex items-center justify-center gap-4">
+                    <button class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
+                            (click)="decrementQuantity()"
+                            [disabled]="quantity <= 1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                      </svg>
+                    </button>
+                    
+                    <input type="number"
+                           [(ngModel)]="quantity"
+                           (change)="onQuantityChange($event)"
+                           min="1"
+                           class="w-16 text-center border border-gray-300 rounded-lg"
+                           [disabled]="product.stock_status === 'outofstock'">
+                    
+                    <button class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
+                            (click)="incrementQuantity()"
+                            [disabled]="product.stock_status === 'outofstock'">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                      </svg>
+                    </button>
+                  </div>
+    
+                  <!-- Add to Cart Button -->
+                  <button class="w-full bg-[#009F7F] text-white py-3 px-4 rounded-lg hover:bg-[#008F6F] transition-colors"
+                          [disabled]="product.stock_status === 'outofstock'"
+                          [class.opacity-50]="product.stock_status === 'outofstock'"
+                          [class.cursor-not-allowed]="product.stock_status === 'outofstock'"
+                          (click)="onAddToCart($event)">
+                    <div class="flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                           class="h-5 w-5 mr-2"
+                           fill="none"
+                           viewBox="0 0 24 24"
+                           stroke="currentColor">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      {{ product.stock_status === 'outofstock' ? 'Rupture de stock' : 'Ajouter au panier' }}
+                    </div>
+                  </button>
+                </div>
+                
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

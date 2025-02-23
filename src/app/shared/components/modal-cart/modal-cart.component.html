@@ -1,0 +1,130 @@
+<ng-container *ngIf="isOpen">
+  <!-- Overlay -->
+  <div class="fixed inset-0 bg-black bg-opacity-40 opacity-50 z-50" 
+  [@overlayAnimation]="'enter'"
+  (click)="isOpenChange.emit(false)">
+  </div>
+
+  <!-- Modal -->
+  <div class="fixed right-0 top-0 h-full w-96 bg-white shadow-lg z-50 overflow-auto"
+  [@modalAnimation]="'enter'">
+    
+    <!-- Header -->
+    <div class="p-4 border-b flex justify-between items-center bg-primary text-white">
+      <h2 class="text-xl font-semibold">Panier</h2>
+      <button (click)="close()" 
+              class="p-2 hover:bg-primary-dark rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             class="h-6 w-6" 
+             fill="none" 
+             viewBox="0 0 24 24" 
+             stroke="currentColor">
+          <path stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Cart Items -->
+    <div class="p-4">
+      <ng-container *ngIf="cart$ | async as cartItems">
+        <div *ngIf="cartItems.length > 0; else emptyCart">
+          <div *ngFor="let item of cartItems" 
+               class="flex items-center gap-4 py-4 border-b">
+            <!-- Image -->
+            <img [src]="item.images[0]?.src || 'assets/images/placeholders/market-placeholder.jpg'"
+                 [alt]="item.name"
+                 class="w-20 h-20 object-cover rounded">
+            
+            <!-- Details -->
+            <div class="flex-1">
+              <h3 class="font-medium">{{ item.name }}</h3>
+              <p class="text-gray-600">{{ item.price | currency:'XAF' }}</p>
+              
+              <!-- Quantity Controls -->
+              <div class="flex items-center gap-2 mt-2">
+                <button (click)="updateQuantity(item.id, (item.quantity || 0) - 1)"
+                        class="p-1 rounded bg-gray-100 hover:bg-gray-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" 
+                       class="h-4 w-4" 
+                       viewBox="0 0 20 20" 
+                       fill="currentColor">
+                    <path fill-rule="evenodd" 
+                          d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" 
+                          clip-rule="evenodd" />
+                  </svg>
+                </button>
+                
+                <span class="w-8 text-center">{{ item.quantity }}</span>
+                
+                <button (click)="updateQuantity(item.id, (item.quantity || 0) + 1)"
+                        class="p-1 rounded bg-gray-100 hover:bg-gray-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" 
+                       class="h-4 w-4" 
+                       viewBox="0 0 20 20" 
+                       fill="currentColor">
+                    <path fill-rule="evenodd" 
+                          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" 
+                          clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Remove Button -->
+            <button (click)="removeItem(item.id)"
+                    class="p-2 text-gray-400 hover:text-red-500">
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                   class="h-5 w-5" 
+                   viewBox="0 0 20 20" 
+                   fill="currentColor">
+                <path fill-rule="evenodd" 
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" 
+                      clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Total -->
+          <div class="mt-4 pt-4 border-t">
+            <div class="flex justify-between items-center">
+              <span class="font-semibold">Total</span>
+              <span class="font-bold text-lg">{{ total$ | async | currency:'XAF' }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Empty Cart Message -->
+    <ng-template #emptyCart>
+      <div class="text-center py-8">
+        <p class="text-gray-500">Votre panier est vide</p>
+      </div>
+    </ng-template>
+
+    <!-- Fixed Bottom Buttons -->
+    <div class="fixed bottom-0 md:w-96 left-0 md:left-[unset] right-0 p-4 bg-white border-t shadow-lg">
+      <div class="flex gap-4">
+        <button (click)="clearCart()"
+                class="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          Vider
+        </button>
+        
+        <button (click)="checkout()"
+                class="flex-1 px-4 py-2 bg-[#009F7F] text-white rounded-lg hover:bg-[#008F6F] transition-colors flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd" />
+            <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z" />
+          </svg>
+          Commander
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>
