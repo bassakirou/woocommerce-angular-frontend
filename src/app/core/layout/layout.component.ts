@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ModalCartComponent } from '../../shared/components/modal-cart/modal-cart.component';
 import { CartService } from '../services/cart.service';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -21,7 +21,7 @@ export class LayoutComponent implements OnInit {
   logoPath = '';
   logoExists = false;
 
-  constructor(private cartService: CartService, private configService: ConfigService) {}
+  constructor(private cartService: CartService, private configService: ConfigService, private router: Router) {}
 
   toggleCart(): void {
     this.isCartOpen = !this.isCartOpen;
@@ -44,5 +44,13 @@ export class LayoutComponent implements OnInit {
       this.logoExists = false;
     };
     img.src = this.logoPath;
+  }
+
+  shouldHideSidebar(): boolean {
+    const currentUrl = this.router.url;
+    return currentUrl === '/a-propos' || 
+           currentUrl === '/thank-you' || 
+           currentUrl.startsWith('/blog') ||
+           currentUrl.startsWith('/checkout');
   }
 }
