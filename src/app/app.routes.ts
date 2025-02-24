@@ -8,6 +8,7 @@ import { BlogPostComponent } from './features/blog/blog-post/blog-post.component
 
 export const routes: Routes = [
   { path: '', component: ProductListComponent },
+  { path: 'products', redirectTo: '', pathMatch: 'full' },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'thank-you', component: ThankYouComponent },

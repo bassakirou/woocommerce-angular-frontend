@@ -6,6 +6,6 @@ import { RouterModule } from '@angular/router';
   selector: 'app-thank-you',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './thank-you.Component.html' 
+  templateUrl: './thank-you.component.html' 
 })
-export class ThankYouComponent {}
+export class ThankYouComponent {} 
