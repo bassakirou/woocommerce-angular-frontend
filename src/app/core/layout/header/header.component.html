@@ -1,39 +1,29 @@
-<header class="bg-[#33A9FF] text-white">
-  <div class="container mx-auto px-4 h-16 flex items-center">
-    <!-- Logo -->
-    <a routerLink="/" class="text-xl font-bold">
-      BNR Market
-    </a>
+<header class="bg-primary text-white fixed bottom-0 w-full left-0 right-0 md:hidden">
 
-    <!-- Navigation -->
-    <nav class="ml-auto">
-      <ul class="flex space-x-6">
-        <li>
-          <a routerLink="/products" 
-             class="hover:text-gray-200 transition-colors">
-            Products
-          </a>
-        </li>
-        <li>
-          <a routerLink="/categories" 
-             class="hover:text-gray-200 transition-colors">
-            Categories
-          </a>
-        </li>
-        <li>
-          <a routerLink="/cart" 
-             class="hover:text-gray-200 transition-colors flex items-center">
-            <span>shop</span>
-            @if (cartItemCount$ | async; as count) {
-              @if (count > 0) {
-                <span class="ml-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {{ count }}
-                </span>
-              }
-            }
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+  <div
+    class="relative p-3 shadow-xl mx-auto w-full max-w-2xl border-gray-500 border-t">
+    <div class="mx-auto flex w-full max-w-md flex-row justify-around">
+        <a routerLink="/products">
+            <svg xmlns="http://www.w3.org/2000/svg" height="15" width="15" stroke="currentColor">
+                <path
+                    d="M11 39h7.5V26.5h11V39H37V19.5L24 9.75 11 19.5Zm-3 3V18L24 6l16 12v24H26.5V29.5h-5V42Zm16-17.65Z" />
+            </svg>
+            Produits
+        </a>
+        <a routerLink="/blog">
+            <svg xmlns="http://www.w3.org/2000/svg" height="15" width="15" stroke="currentColor">
+                <path
+                    d="M12 40q-3.3 0-5.65-2.35Q4 35.3 4 32V16q0-3.3 2.35-5.65Q8.7 8 12 8h24q3.3 0 5.65 2.35Q44 12.7 44 16v16q0 3.3-2.35 5.65Q39.3 40 36 40Zm0-23.5h24q1.45 0 2.725.45Q40 17.4 41 18.25V16q0-2.1-1.45-3.55Q38.1 11 36 11H12q-2.1 0-3.55 1.45Q7 13.9 7 16v2.25q1-.85 2.275-1.3Q10.55 16.5 12 16.5Zm-4.85 6.8L31 29.05q.35.1.725.025.375-.075.625-.325l8-6.7q-.65-1.15-1.8-1.85-1.15-.7-2.55-.7H12q-1.75 0-3.1 1.075T7.15 23.3Z" />
+            </svg>
+            Blog
+        </a>
+        <a routerLink="/a-propos">
+            <svg xmlns="http://www.w3.org/2000/svg" height="15" width="15" stroke="currentColor">
+                <path
+                    d="M12 28.05h15.65v-3H12Zm0-6.5h24v-3H12Zm0-6.5h24v-3H12ZM4 44V7q0-1.15.9-2.075Q5.8 4 7 4h34q1.15 0 2.075.925Q44 5.85 44 7v26q0 1.15-.925 2.075Q42.15 36 41 36H12Zm3-7.25L10.75 33H41V7H7ZM7 7v29.75Z" />
+            </svg>
+            A propos
+        </a>
+    </div>
+</div>
 </header>

@@ -4,7 +4,14 @@
     <div class="container mx-auto px-4">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center space-x-8">
-          <a routerLink="/" class="text-xl text-primary-dark font-bold">BNRMarketplace</a>
+          <a routerLink="/" class="text-xl text-primary-dark font-bold">
+            <ng-container *ngIf="logoExists; else textLogo">
+              <img [src]="logoPath" [alt]="siteName" class="h-8">
+            </ng-container>
+            <ng-template #textLogo>
+              {{ siteName }}
+            </ng-template>
+          </a>
           
         </div>
         
@@ -77,4 +84,7 @@
 
   <!-- Cart Modal -->
   <app-modal-cart [(isOpen)]="isCartOpen"></app-modal-cart>
+
+  <!-- Mobile Menu -->
+  <app-header></app-header>
 </div>
