@@ -9,7 +9,7 @@
         <ng-container *ngFor="let item of cartItems$ | async">
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <img [src]="item.images[0]?.src || 'assets/images/placeholders/market-placeholder.jpg'" [alt]="item.name" class="w-16 h-16 object-cover rounded">
+              <img [src]="item.images && item.images.length > 0 ? item.images[0].src : 'assets/images/placeholders/market-placeholder.jpg'" [alt]="item.name" class="w-16 h-16 object-cover rounded">
               <div class="ml-4">
                 <h3 class="font-medium">{{ item.name }}</h3>
                 <div class="flex items-center mt-2">

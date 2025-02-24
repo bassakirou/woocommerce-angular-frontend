@@ -34,7 +34,7 @@
           <div *ngFor="let item of cartItems" 
                class="flex items-center gap-4 py-4 border-b">
             <!-- Image -->
-            <img [src]="item.images[0]?.src || 'assets/images/placeholders/market-placeholder.jpg'"
+            <img [src]="item.images && item.images.length > 0 ? item.images[0].src : 'assets/images/placeholders/market-placeholder.jpg'"
                  [alt]="item.name"
                  class="w-20 h-20 object-cover rounded">
             
