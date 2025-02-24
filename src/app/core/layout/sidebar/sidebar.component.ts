@@ -39,7 +39,10 @@ export class SidebarComponent implements OnInit {
 
     this.woocommerce.getCategories().subscribe({
       next: (data: Category[]) => {
-        this.categories = data.map(cat => ({
+        // Filter out categories with count = 0
+        const categoriesWithProducts = data.filter(cat => cat.count > 0);
+        
+        this.categories = categoriesWithProducts.map(cat => ({
           ...cat,
           isExpanded: false
         }));
