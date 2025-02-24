@@ -17,25 +17,35 @@
     </button>
   </div>
 
+  @if (!posts) {
+    <div class="min-h-screen flex flex-col justify-center items-center">
+        <img src="https://www.svgrepo.com/show/426192/cogs-settings.svg" alt="Logo" class="mb-8 h-40">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-700 mb-4">Aucun article pour l'instant</h1>
+        <p class="text-center text-gray-500 text-lg md:text-xl lg:text-2xl mb-8">Nous travaillons dur pour améliorer l'experience utilisateur. Restez tuné!</p>
+      </div>
+  }
+
   <!-- Posts Grid -->
-  <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <article *ngFor="let post of posts" 
-             class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-      <a [routerLink]="['/blog', post.id]" class="block">
-        <img [src]="getPostImage(post)" 
-             [alt]="post.title.rendered"
-             class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h2 class="text-xl font-semibold mb-2" [innerHTML]="post.title.rendered | truncate:25"></h2>
-          <div class="text-gray-600 mb-4 text-sm">
-            {{ post.date | date:'longDate' }}
+  @if (posts) {
+    <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article *ngFor="let post of posts" 
+              class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+        <a [routerLink]="['/blog', post.id]" class="block">
+          <img [src]="getPostImage(post)" 
+              [alt]="post.title.rendered"
+              class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h2 class="text-xl font-semibold mb-2" [innerHTML]="post.title.rendered | truncate:25"></h2>
+            <div class="text-gray-600 mb-4 text-sm">
+              {{ post.date | date:'longDate' }}
+            </div>
+            <div class="text-gray-700" [innerHTML]="post.excerpt.rendered | truncate:50"></div>
+            <div class="mt-4 text-[#009F7F] font-medium">
+              Lire la suite →
+            </div> 
           </div>
-          <div class="text-gray-700" [innerHTML]="post.excerpt.rendered | truncate:50"></div>
-          <div class="mt-4 text-[#009F7F] font-medium">
-            Lire la suite →
-          </div> 
-        </div>
-      </a>
-    </article>
-  </div>
+        </a>
+      </article>
+    </div>
+  }
 </div>

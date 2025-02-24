@@ -21,5 +21,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/blog/blog-post/blog-post.component')
       .then(m => m.BlogPostComponent)
   },
+  { 
+    path: ':slug',
+    loadComponent: () => import('./features/pages/page/page.component')
+      .then(m => m.PageComponent)
+  },
   { path: '**', redirectTo: '' }
 ];

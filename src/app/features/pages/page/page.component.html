@@ -1,0 +1,26 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Loading State -->
+  <app-archive-blog-skeleton *ngIf="loading" [cardSkeleton]="true" [listSkeleton]="true" [gridSkeleton]="true" [categoriesSkeleton]="true"></app-archive-blog-skeleton>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="text-center py-12">
+    <p class="text-red-500" *ngIf="!notFound">Une erreur est survenue lors du chargement de la page.</p>
+    <p class="text-red-500" *ngIf="notFound">La page demandée n'existe pas.</p>
+    <div class="mt-4">
+      <a routerLink="/" class="text-[#009F7F] hover:underline">← Retour à l'accueil</a>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <article *ngIf="page && !loading && !error" class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8" [innerHTML]="page.title.rendered"></h1>
+    <ng-container *ngIf="page.featured_media">  
+      <img *ngIf="getPageImage()" 
+        [src]="getPageImage()" 
+        [alt]="page.title.rendered"
+        class="w-full h-96 object-cover rounded-lg mb-8">
+    </ng-container>
+
+    <div class="prose prose-lg max-w-none" [innerHTML]="page.content.rendered"></div>
+  </article>
+</div>
