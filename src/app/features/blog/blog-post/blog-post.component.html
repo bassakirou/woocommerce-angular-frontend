@@ -1,0 +1,33 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#009F7F]"></div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="text-center py-12">
+    <p class="text-red-500">Une erreur est survenue lors du chargement de l'article.</p>
+    <div class="mt-4">
+      <a routerLink="/blog" class="text-[#009F7F] hover:underline">← Retour au blog</a>
+    </div>
+  </div>
+
+  <!-- Post Content -->
+  <article *ngIf="post && !loading && !error" class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <a routerLink="/blog" class="text-[#009F7F] hover:underline">← Retour au blog</a>
+    </div>
+
+    <h1 class="text-4xl font-bold mb-4" [innerHTML]="post.title.rendered"></h1>
+    
+    <div class="text-gray-600 mb-8">
+      {{ post.date | date:'longDate' }}
+    </div>
+
+    <img [src]="getPostImage()" 
+         [alt]="post.title.rendered"
+         class="w-full h-96 object-cover rounded-lg mb-8">
+
+    <div class="prose prose-lg max-w-none" [innerHTML]="post.content.rendered"></div>
+  </article>
+</div>

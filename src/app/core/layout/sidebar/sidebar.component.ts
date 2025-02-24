@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { WooCommerceService, Category } from '../../services/woocommerce.service';
+import { ArchiveBlogSkeletonComponent } from "../../../shared/components/skeleton/archive-blog-skeleton/archive-blog-skeleton.component";
 
 interface CategoryWithUI extends Category {
   isExpanded: boolean;
@@ -13,7 +14,7 @@ interface CategoryWithUI extends Category {
   templateUrl: './sidebar.component.html',
   //styleUrls: ['./sidebar.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule]
+  imports: [CommonModule, RouterModule, FormsModule, ArchiveBlogSkeletonComponent]
 })
 export class SidebarComponent implements OnInit {
   categories: CategoryWithUI[] = [];

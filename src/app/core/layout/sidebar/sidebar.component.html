@@ -14,9 +14,10 @@
       </div>
 
       <!-- Loading spinner -->
-      <div *ngIf="loading" class="text-center py-4">
+      <!-- <div *ngIf="loading" class="text-center py-4">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
+      </div> -->
+      <app-archive-blog-skeleton *ngIf="loading" [categoriesSkeleton]="true"></app-archive-blog-skeleton>
 
       <!-- Error message -->
       <div *ngIf="error" class="text-red-500 text-center py-4">

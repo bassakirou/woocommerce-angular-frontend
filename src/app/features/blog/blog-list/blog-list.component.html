@@ -1,0 +1,41 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">Blog</h1>
+
+  <!-- Loading State -->
+  <!-- <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#009F7F]"></div>
+  </div> -->
+
+  <app-archive-blog-skeleton *ngIf="loading" [gridSkeleton]="true"></app-archive-blog-skeleton>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="text-center py-12">
+    <p class="text-red-500">Une erreur est survenue lors du chargement des articles.</p>
+    <button (click)="loadPosts()" 
+            class="mt-4 px-4 py-2 bg-[#009F7F] text-white rounded-lg hover:bg-[#008e70]">
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Posts Grid -->
+  <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <article *ngFor="let post of posts" 
+             class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+      <a [routerLink]="['/blog', post.id]" class="block">
+        <img [src]="getPostImage(post)" 
+             [alt]="post.title.rendered"
+             class="w-full h-48 object-cover">
+        <div class="p-6">
+          <h2 class="text-xl font-semibold mb-2" [innerHTML]="post.title.rendered | truncate:25"></h2>
+          <div class="text-gray-600 mb-4 text-sm">
+            {{ post.date | date:'longDate' }}
+          </div>
+          <div class="text-gray-700" [innerHTML]="post.excerpt.rendered | truncate:50"></div>
+          <div class="mt-4 text-[#009F7F] font-medium">
+            Lire la suite →
+          </div> 
+        </div>
+      </a>
+    </article>
+  </div>
+</div>
