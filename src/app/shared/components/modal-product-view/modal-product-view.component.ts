@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { Product, Category } from '../product/product.component';
 import { FormsModule } from '@angular/forms';
 
@@ -29,6 +29,8 @@ export class ModalProductViewComponent {
 
   currentImageIndex = 0;
   quantity = 1;
+
+  constructor(private router: Router) {}
 
   onClose(): void {
     this.closeModal.emit();
@@ -91,5 +93,12 @@ export class ModalProductViewComponent {
 
   hasGallery(): boolean {
     return this.product?.images && this.product.images.length > 1 || false;
+  }
+
+  navigateToCategory(category: Category): void {
+    this.onClose();
+    this.router.navigate(['/'], { 
+      queryParams: { category: category.id }
+    });
   }
 }

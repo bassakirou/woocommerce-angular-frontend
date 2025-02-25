@@ -88,8 +88,9 @@
               <h3 class="text-lg font-semibold mb-2">Catégories</h3>
               <div class="flex flex-wrap gap-2">
                 <a *ngFor="let category of product.categories"
-                   [routerLink]="['/?category', category.id]"
-                   (click)="onClose()"
+                   [routerLink]="['/']"
+                   [queryParams]="{category: category.id}"
+                   (click)="navigateToCategory(category)"
                    class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors">
                   {{ category.name }}
                 </a>
