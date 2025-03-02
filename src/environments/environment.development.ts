@@ -1,9 +1,9 @@
 export const environment = {
   production: false,
   woocommerce: {
-    url: 'https://market.bnrcompany.com/wp-json/wc/v3',
-    consumerKey: 'ck_a8eb697a3873726c241388c8fa563dccf91b17bb',
-    consumerSecret: 'cs_5a56ac3fa9195a6c9538a5965bf9eac7ebfa648e',
-    urlBlog: 'https://market.bnrcompany.com/wp-json/wp/v2'
-  }
+    url: 'https://wemos.net/wp-json/wc/v3',
+    consumerKey: 'ck_8b7ead34d31e3ea575260477951758c547f3ce67',
+    consumerSecret: 'cs_64449cfe1ccce2935fddc42d7e0c2169bf124bab',
+    urlBlog: 'https://wemos.net/wp-json/wp/v2',
+  },
 };
