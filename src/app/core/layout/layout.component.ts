@@ -5,36 +5,50 @@ import { ModalCartComponent } from '../../shared/components/modal-cart/modal-car
 import { CartService } from '../services/cart.service';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ConfigService } from '../services/config.service';
-import { HeaderComponent } from "./header/header.component";
+import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, SidebarComponent, ModalCartComponent, HeaderComponent],
-  templateUrl: './layout.component.html'
+  imports: [
+    CommonModule,
+    RouterModule,
+    SidebarComponent,
+    ModalCartComponent,
+    HeaderComponent,
+  ],
+  templateUrl: './layout.component.html',
 })
 export class LayoutComponent implements OnInit {
   isCartOpen = false;
   itemCount$ = this.cartService.cartItemCount$;
+  isMobileMenuOpen = false;
 
   siteName = 'BNRMarketplace';
   logoPath = '';
   logoExists = false;
 
-  constructor(private cartService: CartService, private configService: ConfigService, private router: Router) {}
-
-  toggleCart(): void {
-    this.isCartOpen = !this.isCartOpen;
-  }
+  constructor(
+    private cartService: CartService,
+    private configService: ConfigService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.configService.loadConfig().subscribe(config => {
+    this.configService.loadConfig().subscribe((config) => {
       this.siteName = config.siteName;
       this.logoPath = config.logoPath;
       this.checkLogoExists();
     });
   }
 
+  toggleCart(): void {
+    this.isCartOpen = !this.isCartOpen;
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
   private checkLogoExists() {
     const img = new Image();
     img.onload = () => {
@@ -48,9 +62,11 @@ export class LayoutComponent implements OnInit {
 
   shouldHideSidebar(): boolean {
     const currentUrl = this.router.url;
-    return currentUrl === '/a-propos' || 
-           currentUrl === '/thank-you' || 
-           currentUrl.startsWith('/blog') ||
-           currentUrl.startsWith('/checkout');
+    return (
+      currentUrl === '/a-propos' ||
+      currentUrl === '/thank-you' ||
+      currentUrl.startsWith('/blog') ||
+      currentUrl.startsWith('/checkout')
+    );
   }
 }

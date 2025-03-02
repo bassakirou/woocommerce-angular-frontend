@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { WooCommerceService, Category } from '../../services/woocommerce.service';
-import { ArchiveBlogSkeletonComponent } from "../../../shared/components/skeleton/archive-blog-skeleton/archive-blog-skeleton.component";
+import {
+  WooCommerceService,
+  Category,
+} from '../../services/woocommerce.service';
+import { ArchiveBlogSkeletonComponent } from '../../../shared/components/skeleton/archive-blog-skeleton/archive-blog-skeleton.component';
 
 interface CategoryWithUI extends Category {
   isExpanded: boolean;
@@ -14,9 +17,16 @@ interface CategoryWithUI extends Category {
   templateUrl: './sidebar.component.html',
   //styleUrls: ['./sidebar.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ArchiveBlogSkeletonComponent]
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ArchiveBlogSkeletonComponent,
+  ],
 })
 export class SidebarComponent implements OnInit {
+  @Input() isOpen = false;
+  @Output() closeMenu = new EventEmitter<void>();
   categories: CategoryWithUI[] = [];
   filteredCategories: CategoryWithUI[] = [];
   searchTerm: string = '';
@@ -40,11 +50,11 @@ export class SidebarComponent implements OnInit {
     this.woocommerce.getCategories().subscribe({
       next: (data: Category[]) => {
         // Filter out categories with count = 0
-        const categoriesWithProducts = data.filter(cat => cat.count > 0);
-        
-        this.categories = categoriesWithProducts.map(cat => ({
+        const categoriesWithProducts = data.filter((cat) => cat.count > 0);
+
+        this.categories = categoriesWithProducts.map((cat) => ({
           ...cat,
-          isExpanded: false
+          isExpanded: false,
         }));
         this.filteredCategories = this.categories;
         this.loading = false;
@@ -53,16 +63,16 @@ export class SidebarComponent implements OnInit {
         console.error('Error loading categories:', err);
         this.error = 'Impossible de charger les catégories';
         this.loading = false;
-      }
+      },
     });
   }
 
   getChildCategories(parentId: number): CategoryWithUI[] {
-    return this.categories.filter(cat => cat.parent === parentId);
+    return this.categories.filter((cat) => cat.parent === parentId);
   }
 
   hasChildren(categoryId: number): boolean {
-    return this.categories.some(cat => cat.parent === categoryId);
+    return this.categories.some((cat) => cat.parent === categoryId);
   }
 
   filterCategories(): void {
@@ -72,7 +82,7 @@ export class SidebarComponent implements OnInit {
     }
 
     const search = this.searchTerm.toLowerCase().trim();
-    this.filteredCategories = this.categories.filter(category => 
+    this.filteredCategories = this.categories.filter((category) =>
       category.name.toLowerCase().includes(search)
     );
   }
