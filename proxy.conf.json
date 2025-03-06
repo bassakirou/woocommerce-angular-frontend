@@ -1,0 +1,7 @@
+{
+  "/wp-json": {
+    "target": "http://test-api.test",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

@@ -5,6 +5,9 @@ import { ThankYouComponent } from './features/checkout/thank-you/thank-you.compo
 import { CartComponent } from './features/cart/cart.component';
 import { BlogListComponent } from './features/blog/blog-list/blog-list.component';
 import { BlogPostComponent } from './features/blog/blog-post/blog-post.component';
+import { TestLoginComponent } from './features/test-login/test-login.component';
+import { TestRegisterComponent } from './features/test-register/test-register.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: ProductListComponent },
@@ -12,20 +15,30 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'thank-you', component: ThankYouComponent },
-  { 
+  { path: 'test-login', component: TestLoginComponent },
+  { path: 'test-register', component: TestRegisterComponent },
+  { path: 'dashboard', component: DashboardComponent },
+
+  {
     path: 'blog',
-    loadComponent: () => import('./features/blog/blog-list/blog-list.component')
-      .then(m => m.BlogListComponent)
+    loadComponent: () =>
+      import('./features/blog/blog-list/blog-list.component').then(
+        (m) => m.BlogListComponent
+      ),
   },
-  { 
+  {
     path: 'blog/:id',
-    loadComponent: () => import('./features/blog/blog-post/blog-post.component')
-      .then(m => m.BlogPostComponent)
+    loadComponent: () =>
+      import('./features/blog/blog-post/blog-post.component').then(
+        (m) => m.BlogPostComponent
+      ),
   },
-  { 
+  {
     path: ':slug',
-    loadComponent: () => import('./features/pages/page/page.component')
-      .then(m => m.PageComponent)
+    loadComponent: () =>
+      import('./features/pages/page/page.component').then(
+        (m) => m.PageComponent
+      ),
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
