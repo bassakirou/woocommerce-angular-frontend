@@ -1,14 +1,71 @@
-<div class="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+<div
+  class="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4"
+>
   <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
     <div class="mb-6">
-      <svg class="w-16 h-16 text-[#009F7F] mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      <svg
+        class="w-16 h-16 text-[#009F7F] mx-auto"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 13l4 4L19 7"
+        ></path>
       </svg>
     </div>
-    <h1 class="text-3xl font-bold text-gray-800 mb-4">Merci pour votre commande !</h1>
-    <p class="text-gray-600 mb-6">Votre commande a été validée avec succès. Vous recevrez bientôt un email de confirmation.</p>
-    <a routerLink="/"
-       class="inline-block bg-[#009F7F] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#008e70] transition-colors">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">
+      Merci pour votre commande !
+    </h1>
+    <p class="text-gray-600 mb-6">
+      Votre commande a été validée avec succès. Vous recevrez bientôt un email
+      de confirmation.
+    </p>
+
+    <!-- Message de création de compte -->
+    <div
+      *ngIf="accountCreated"
+      class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md text-left"
+    >
+      <h3 class="text-lg font-medium text-blue-800">
+        Compte créé automatiquement
+      </h3>
+      <p class="mt-2 text-sm text-blue-700">
+        Un compte a été créé pour vous avec votre adresse email. Vos
+        informations de connexion ont été envoyées à votre adresse email.
+      </p>
+    </div>
+
+    <!-- Détails de la commande si disponibles -->
+    <div *ngIf="orderDetails && !isLoading" class="mb-6 text-left">
+      <h3 class="text-lg font-medium text-gray-800 mb-2">
+        Détails de votre commande
+      </h3>
+      <p class="text-gray-600">
+        Numéro de commande:
+        <span class="font-semibold">{{ orderDetails.id }}</span>
+      </p>
+      <p class="text-gray-600">
+        Date:
+        <span class="font-semibold">{{
+          orderDetails.date_created | date : "dd/MM/yyyy"
+        }}</span>
+      </p>
+      <p class="text-gray-600">
+        Total:
+        <span class="font-semibold">{{
+          orderDetails.total | currency : "EUR"
+        }}</span>
+      </p>
+    </div>
+
+    <a
+      routerLink="/"
+      class="inline-block bg-[#009F7F] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#008e70] transition-colors"
+    >
       Retour à la boutique
     </a>
   </div>

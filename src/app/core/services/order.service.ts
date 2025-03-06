@@ -24,10 +24,10 @@ export interface OrderData {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrderService {
-  private readonly apiUrl = `${environment.url}/orders`;
+  private readonly apiUrl = `${environment.url}/orders/`;
   private readonly consumerKey = environment.consumerKey;
   private readonly consumerSecret = environment.consumerSecret;
 
@@ -36,15 +36,25 @@ export class OrderService {
   createOrder(orderData: OrderData): Observable<any> {
     const params = new URLSearchParams({
       consumer_key: this.consumerKey,
-      consumer_secret: this.consumerSecret
+      consumer_secret: this.consumerSecret,
     });
 
-    return this.http.post(`${this.apiUrl}?${params.toString()}`, orderData)
+    return this.http
+      .post(`${this.apiUrl}?${params.toString()}`, orderData)
       .pipe(
-        catchError(error => {
+        catchError((error) => {
           console.error('Erreur lors de la création de la commande:', error);
           return throwError(() => error);
         })
       );
+  }
+
+  /**
+   * Récupère les détails d'une commande par son ID
+   * @param orderId ID de la commande à récupérer
+   * @returns Observable avec les détails de la commande
+   */
+  getOrderById(orderId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}${orderId}`);
   }
 }
